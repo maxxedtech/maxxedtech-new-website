@@ -178,6 +178,9 @@ function Home() {
       {/* ─── MARQUEE ─── */}
       <Marquee />
 
+      {/* ─── INTERACTIVE DIGITAL UNIVERSE ─── */}
+      <DigitalUniverse />
+
       {/* ─── SERVICES ─── */}
       <section className="section-pad">
         <div className="site-container">
@@ -399,6 +402,91 @@ function Home() {
 
       <CTASection />
     </>
+  );
+}
+
+
+function DigitalUniverse() {
+  const [activeCapability, setActiveCapability] = useState(0);
+  const activeService = services[activeCapability] ?? services[0];
+  const ActiveIcon = activeService.icon;
+
+  return (
+    <section className="section-pad maxxed-universe-section">
+      <div className="site-container">
+        <div className="maxxed-universe-intro">
+          <div>
+            <span className="maxxed-section-kicker"><i /> ONE STUDIO / MANY POSSIBILITIES</span>
+            <SectionHeading
+              label="The Maxxed ecosystem"
+              title={<>One partner. <span className="gradient-text">Every next move.</span></>}
+              copy="Explore the capabilities that turn ambitious ideas into connected digital experiences."
+            />
+          </div>
+          <span className="maxxed-universe-index">MT / CAPABILITIES<br />01—05</span>
+        </div>
+
+        <div className="maxxed-universe-grid">
+          <div className="maxxed-universe-selector" role="tablist" aria-label="Explore Maxxed Tech capabilities">
+            {services.map((service, index) => {
+              const Icon = service.icon;
+              const selected = activeCapability === index;
+              return (
+                <button
+                  type="button"
+                  key={service.slug}
+                  role="tab"
+                  id={`capability-tab-${service.slug}`}
+                  aria-selected={selected}
+                  aria-controls="capability-detail"
+                  className={`maxxed-capability-tab ${selected ? "is-active" : ""}`}
+                  onClick={() => setActiveCapability(index)}
+                >
+                  <span className="maxxed-capability-number">0{index + 1}</span>
+                  <span className="maxxed-capability-icon"><Icon size={19} strokeWidth={1.7} /></span>
+                  <span className="maxxed-capability-label">{service.shortTitle}</span>
+                  <span className="maxxed-capability-arrow" aria-hidden="true">↗</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <motion.div
+            key={activeService.slug}
+            id="capability-detail"
+            role="tabpanel"
+            aria-labelledby={`capability-tab-${activeService.slug}`}
+            className="maxxed-capability-detail"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.28, ease: "easeOut" }}
+          >
+            <div className="maxxed-capability-visual" aria-hidden="true">
+              <div className="maxxed-capability-grid" />
+              <div className="maxxed-capability-ring ring-outer" />
+              <div className="maxxed-capability-ring ring-middle" />
+              <div className="maxxed-capability-ring ring-inner" />
+              <div className="maxxed-capability-core"><ActiveIcon size={34} strokeWidth={1.3} /></div>
+              <span className="maxxed-capability-node node-one">STRATEGY</span>
+              <span className="maxxed-capability-node node-two">DESIGN</span>
+              <span className="maxxed-capability-node node-three">DELIVERY</span>
+              <span className="maxxed-capability-coordinate">0{activeCapability + 1} / 05</span>
+            </div>
+            <div className="maxxed-capability-copy">
+              <span className="maxxed-capability-kicker">CAPABILITY / 0{activeCapability + 1}</span>
+              <h3>{activeService.title}</h3>
+              <p>{activeService.benefit}</p>
+              <ul>
+                {activeService.features.slice(0, 4).map((feature) => (
+                  <li key={feature}><span aria-hidden="true">↗</span>{feature}</li>
+                ))}
+              </ul>
+              <Link to="/services" className="maxxed-featured-link">Explore this capability <span>↗</span></Link>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
   );
 }
 
