@@ -47,6 +47,8 @@ export const Route = createFileRoute("/")({
 const reveal = { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 } };
 
 function Home() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <>
       {/* ─── CINEMATIC HERO ─── */}
