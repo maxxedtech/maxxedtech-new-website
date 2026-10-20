@@ -631,9 +631,8 @@
 }
 .maxxed-visual-vignette,
 .maxxed-hero-gridfloor,
-.maxxed-sculpture-stage,
 .maxxed-float-panel,
-.maxxed-visual-index { position: relative; z-index: 1; }
+.maxxed-visual-index { z-index: 1; }
 .maxxed-sculpture-stage { z-index: 2; }
 @media (max-width: 720px) {
   .maxxed-scene-canvas { opacity: .54; }
