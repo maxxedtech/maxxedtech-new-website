@@ -164,10 +164,6 @@ export function MaxxedScene() {
       pointer.targetX = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
       pointer.targetY = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
     };
-    const onPointerLeave = () => {
-      pointer.targetX = 0;
-      pointer.targetY = 0;
-    };
     const onMotionPreference = () => {
       window.cancelAnimationFrame(frame);
       draw(performance.now(), true);
