@@ -328,7 +328,7 @@
 .maxxed-particle-one { top: 25px; left: 45px; }
 .maxxed-particle-two { right: 22px; top: 85px; width: 4px; height: 4px; background: #e6f7f6; }
 .maxxed-particle-three { bottom: 26px; left: 70px; width: 3px; height: 3px; }
-.maxxed-loader-logo { display: block; width: min(80vw, 460px); max-height: 96px; object-fit: contain; margin: 0 auto 13px; filter: drop-shadow(0 0 18px rgba(53,189,181,.12)); }
+.maxxed-loader-logo { display: block; width: min(80vw, 460px); max-height: 96px; object-fit: contain; margin: 0 auto 13px; }
 .maxxed-loader-wordmark { color: rgba(230,247,246,.55); font: 500 9px/1.4 "JetBrains Mono", monospace; letter-spacing: .34em; margin: 0 0 28px 3px; }
 .maxxed-loader-progress { width: min(72vw, 330px); height: 2px; overflow: hidden; background: rgba(255,255,255,.11); }
 .maxxed-loader-progress span { display: block; height: 100%; background: linear-gradient(90deg,#007a73,#35bdb5,#e6f7f6); box-shadow: 0 0 12px rgba(53,189,181,.65); }
@@ -416,7 +416,10 @@
   .maxxed-panel-bottom { left: 10%; bottom: 8%; }
 }
 @media (max-width: 640px) {
-  .maxxed-loader-scene { transform: scale(.86); margin-top: -14px; margin-bottom: -4px; }
+  .maxxed-loader-scene { transform: scale(.8); margin-top: -14px; margin-bottom: -4px; }
+  .maxxed-loader-haze { filter: blur(48px); opacity: .7; }
+  .maxxed-loader-orbit-two, .maxxed-loader-orbit-three { display: none; }
+  .maxxed-loader-core, .maxxed-loader-orbit-one { animation: none; }
   .maxxed-loader-logo { width: min(82vw, 370px); max-height: 76px; }
   .maxxed-loader-wordmark { font-size: 8px; letter-spacing: .22em; }
   .maxxed-loader-footer { inset-inline: 16px; bottom: 16px; font-size: 7px; letter-spacing: .07em; }
@@ -425,7 +428,11 @@
   .maxxed-hero-description { font-size: 15px; line-height: 1.75; }
   .maxxed-hero-eyebrow { font-size: 8px; gap: 7px; letter-spacing: .08em; }
   .maxxed-hero-visual { min-height: 330px; margin-top: 2px; }
-  .maxxed-sculpture { width: 190px; }
+  .maxxed-sculpture { width: 176px; animation: none; }
+  .maxxed-sculpture-ring-b, .maxxed-sculpture-ring-c { display: none; }
+  .maxxed-sculpture-ring-a { animation: none; }
+  .maxxed-float-panel { backdrop-filter: blur(8px); }
+  .maxxed-sculpture-surface { backdrop-filter: none; }
   .maxxed-panel-top { top: 7%; left: -1%; width: 158px; padding: 11px; }
   .maxxed-panel-side { right: -2%; top: 43%; width: 146px; padding: 10px; }
   .maxxed-panel-bottom { left: 0; bottom: 5%; padding: 9px 10px; gap: 8px; }
