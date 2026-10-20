@@ -4,6 +4,7 @@ import { Check, ChevronDown, Code2, HeartHandshake, Lightbulb, Phone, Rocket, Sh
 import { useEffect, useRef, useState } from "react";
 import { CTASection, SectionHeading } from "@/components/site/Primitives";
 import { ProjectCard } from "@/components/site/ProjectCard";
+import { MaxxedScene } from "@/components/site/MaxxedScene";
 import { projects, services, testimonials } from "@/data/site";
 
 const description =
@@ -132,6 +133,7 @@ function Home() {
             aria-label="Abstract 3D digital sculpture surrounded by interface panels"
             role="img"
           >
+            <MaxxedScene />
             <div className="maxxed-visual-vignette" aria-hidden="true" />
             <div className="maxxed-hero-gridfloor" aria-hidden="true" />
             <div className="maxxed-sculpture-stage" aria-hidden="true">
