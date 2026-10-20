@@ -614,3 +614,30 @@
   .maxxed-capability-tab { transition:none; }
   .maxxed-capability-tab:hover { transform:none; }
 }
+
+
+/* Lightweight interactive 3D canvas layer */
+.maxxed-hero-visual { isolation: isolate; }
+.maxxed-scene-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: .78;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.maxxed-visual-vignette,
+.maxxed-hero-gridfloor,
+.maxxed-sculpture-stage,
+.maxxed-float-panel,
+.maxxed-visual-index { position: relative; z-index: 1; }
+.maxxed-sculpture-stage { z-index: 2; }
+@media (max-width: 720px) {
+  .maxxed-scene-canvas { opacity: .54; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .maxxed-scene-canvas { opacity: .42; }
+}
