@@ -1,29 +1,29 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 
-const TELEMETRY_PHRASES = [
-  "INITIALIZING MAXXED OS",
-  "OPTIMIZING ASSETS",
-  "READY",
+const STATUS_STEPS = [
+  { at: 0, label: "INITIALIZING MAXXED OS" },
+  { at: 38, label: "ASSEMBLING DIGITAL SPACE" },
+  { at: 72, label: "CALIBRATING INTERFACE" },
+  { at: 96, label: "SYSTEMS ONLINE" },
 ];
 
 export function Preloader({ onComplete }: { onComplete?: () => void }) {
   const [visible, setVisible] = useState(true);
   const [progress, setProgress] = useState(0);
-  const [phraseIndex, setPhraseIndex] = useState(0);
+  const reduceMotion = useReducedMotion();
 
   const dismiss = useCallback(() => {
     try {
       sessionStorage.setItem("maxxed_loaded_session", "true");
     } catch {
-      // Ignore sessionStorage security restrictions in private modes
+      // Storage can be unavailable in private browsing contexts.
     }
     setVisible(false);
     onComplete?.();
   }, [onComplete]);
 
   useEffect(() => {
-    // 1. Check session memory
     try {
       if (sessionStorage.getItem("maxxed_loaded_session")) {
         setVisible(false);
@@ -31,124 +31,111 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
         return;
       }
     } catch {
-      // Storage unavailable, continue
+      // Continue with the intro if session storage is unavailable.
     }
 
-    // 2. Escape key listener for fast dismissal
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        dismiss();
-      }
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") dismiss();
     };
     window.addEventListener("keydown", handleKeyDown);
 
-    // 3. Fast telemetry cycler
-    const phraseTimer = setInterval(() => {
-      setPhraseIndex((i) => (i + 1) % TELEMETRY_PHRASES.length);
-    }, 250);
-
-    // 4. Short, smooth, reliable counter (750ms total)
-    const startTime = performance.now();
-    const duration = 750;
-
-    let frameId: number;
-    let completed = false;
+    const duration = reduceMotion ? 450 : 1650;
+    const start = performance.now();
+    let frame = 0;
+    let exitTimer: ReturnType<typeof setTimeout> | undefined;
+    let finished = false;
 
     const tick = (now: number) => {
-      if (completed) return;
-      const elapsed = now - startTime;
-      const pct = Math.min(100, Math.floor((elapsed / duration) * 100));
-      setProgress(pct);
+      if (finished) return;
+      const ratio = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - ratio, 2.2);
+      setProgress(Math.min(100, Math.round(eased * 100)));
 
-      if (pct < 100) {
-        frameId = requestAnimationFrame(tick);
+      if (ratio < 1) {
+        frame = requestAnimationFrame(tick);
       } else {
-        completed = true;
-        clearInterval(phraseTimer);
-        setTimeout(dismiss, 200);
+        finished = true;
+        exitTimer = setTimeout(dismiss, reduceMotion ? 0 : 180);
       }
     };
 
-    frameId = requestAnimationFrame(tick);
-
-    // 5. Bulletproof safety fallback: force dismiss after 1.2s no matter what
+    frame = requestAnimationFrame(tick);
     const safetyTimer = setTimeout(() => {
-      if (!completed) {
-        completed = true;
+      if (!finished) {
+        finished = true;
         setProgress(100);
         dismiss();
       }
-    }, 1200);
+    }, duration + 900);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      cancelAnimationFrame(frameId);
-      clearInterval(phraseTimer);
+      cancelAnimationFrame(frame);
       clearTimeout(safetyTimer);
+      if (exitTimer) clearTimeout(exitTimer);
     };
-  }, [dismiss, onComplete]);
+  }, [dismiss, onComplete, reduceMotion]);
+
+  const status = [...STATUS_STEPS].reverse().find((step) => progress >= step.at)?.label ?? STATUS_STEPS[0].label;
 
   return (
     <AnimatePresence mode="wait">
       {visible && (
         <motion.div
-          key="preloader-overlay"
+          key="maxxed-os-loader"
+          className={`maxxed-loader fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden select-none ${reduceMotion ? "motion-safe:transition-none" : ""}`}
           initial={{ opacity: 1 }}
-          exit={{
-            y: "-100%",
-            transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] },
-          }}
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black overflow-hidden select-none"
+          exit={{ y: "-100%", opacity: 0.98, transition: { duration: reduceMotion ? 0.15 : 0.65, ease: [0.76, 0, 0.24, 1] } }}
+          role="status"
+          aria-label="Initializing Maxxed Tech"
         >
-          {/* Ambient Cybernetic Teal Glows */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-primary/25 rounded-full blur-[100px] animate-pulse" />
-            <div className="absolute inset-0 bg-[radial-gradient(rgba(53,189,181,0.14)_1px,transparent_1px)] [background-size:20px_20px] opacity-40" />
-          </div>
+          <div className="maxxed-loader-grid" aria-hidden="true" />
+          <div className="maxxed-loader-haze maxxed-loader-haze-one" aria-hidden="true" />
+          <div className="maxxed-loader-haze maxxed-loader-haze-two" aria-hidden="true" />
 
-          <div className="relative z-10 flex flex-col items-center max-w-sm px-6 text-center">
-            {/* Loading Logo */}
-            <motion.div
-              initial={{ scale: 0.85, opacity: 0, y: 10 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="relative mb-7"
-            >
-              <div className="absolute -inset-3 rounded-2xl bg-primary/30 blur-xl animate-pulse" />
-              <img
-                src="/images/logo/loading-logo.png"
-                alt="Maxxed Tech"
-                className="relative h-16 md:h-20 w-auto object-contain drop-shadow-[0_0_20px_rgba(53,189,181,0.6)]"
-              />
-            </motion.div>
-
-            {/* Glowing Custom Progress Bar */}
-            <div className="w-56 h-[3px] bg-white/10 rounded-full overflow-hidden relative shadow-inner">
-              <div
-                className="h-full bg-gradient-to-r from-primary via-teal-300 to-primary rounded-full relative shadow-[0_0_12px_#35bdb5] transition-all duration-75 ease-out"
-                style={{ width: `${progress}%` }}
-              >
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#ffffff]" />
+          <div className="maxxed-loader-content">
+            <div className="maxxed-loader-scene" aria-hidden="true">
+              <div className="maxxed-loader-orbit maxxed-loader-orbit-one" />
+              <div className="maxxed-loader-orbit maxxed-loader-orbit-two" />
+              <div className="maxxed-loader-orbit maxxed-loader-orbit-three" />
+              <div className="maxxed-loader-core">
+                <span className="maxxed-core-face maxxed-core-front" />
+                <span className="maxxed-core-face maxxed-core-back" />
+                <span className="maxxed-core-face maxxed-core-right" />
+                <span className="maxxed-core-face maxxed-core-left" />
+                <span className="maxxed-core-face maxxed-core-top" />
+                <span className="maxxed-core-face maxxed-core-bottom" />
               </div>
+              <span className="maxxed-loader-particle maxxed-particle-one" />
+              <span className="maxxed-loader-particle maxxed-particle-two" />
+              <span className="maxxed-loader-particle maxxed-particle-three" />
             </div>
 
-            {/* Percentage & Status Line */}
-            <div className="mt-4 flex items-center justify-between w-56 text-xs font-mono">
-              <span className="text-muted-foreground/70 tracking-wider">
-                {progress === 100 ? "READY" : TELEMETRY_PHRASES[phraseIndex]}
-              </span>
-              <span className="text-primary font-bold tracking-widest">{progress}%</span>
+            <motion.img
+              src="/images/logo/navbar-logo.png"
+              alt="Maxxed Tech"
+              className="maxxed-loader-logo"
+              initial={reduceMotion ? false : { opacity: 0, y: 12, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: reduceMotion ? 0.15 : 0.7, delay: reduceMotion ? 0 : 0.18, ease: "easeOut" }}
+            />
+
+            <div className="maxxed-loader-wordmark">DIGITAL SYSTEMS STUDIO</div>
+
+            <div className="maxxed-loader-progress" aria-hidden="true">
+              <motion.span animate={{ width: `${progress}%` }} transition={{ duration: 0.08, ease: "linear" }} />
+            </div>
+
+            <div className="maxxed-loader-status">
+              <span>{status}</span>
+              <span className="maxxed-loader-percent">{String(progress).padStart(3, "0")}%</span>
             </div>
           </div>
 
-          {/* Skip button */}
-          <button
-            type="button"
-            onClick={dismiss}
-            className="absolute bottom-6 flex items-center gap-1.5 text-xs font-mono tracking-wider text-muted-foreground hover:text-primary transition-colors cursor-pointer uppercase py-1.5 px-4 rounded-full border border-white/10 bg-white/5 hover:border-primary/40 hover:bg-primary/10"
-          >
-            Skip Intro <span>→</span>
-          </button>
+          <div className="maxxed-loader-footer">
+            <span>DESIGNED TO MOVE YOU FORWARD</span>
+            <button type="button" onClick={dismiss}>Skip intro <span aria-hidden="true">↗</span></button>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

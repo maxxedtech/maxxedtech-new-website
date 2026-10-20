@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useInView } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Check, ChevronDown, Code2, HeartHandshake, Lightbulb, Phone, Rocket, Shield, Users, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CTASection, SectionHeading } from "@/components/site/Primitives";
@@ -47,83 +47,132 @@ export const Route = createFileRoute("/")({
 const reveal = { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 } };
 
 function Home() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <>
-      {/* ─── HERO ─── */}
-      <section className="home-hero">
-        <div className="dot-grid" />
-        <div className="hero-glow hero-glow-a" />
-        <div className="hero-glow hero-glow-b" />
-        <div className="noise" />
+      {/* ─── CINEMATIC HERO ─── */}
+      <section className="home-hero maxxed-hero">
+        <div className="dot-grid" aria-hidden="true" />
+        <div className="hero-glow hero-glow-a" aria-hidden="true" />
+        <div className="hero-glow hero-glow-b" aria-hidden="true" />
+        <div className="noise" aria-hidden="true" />
 
-        <div className="site-container relative z-10 flex min-h-screen items-center pt-24">
-          <div className="max-w-4xl lg:max-w-3xl">
-            <motion.div
-              {...reveal}
-              transition={{ duration: 0.5 }}
-              className="hero-badge"
-            >
-              <img
-                src="/images/logo/favicon-logo.png"
-                alt=""
-                className="h-4 w-4 object-contain opacity-80"
-              />
-              MaxxedTech Ltd — Est. 2024
+        <div className="site-container maxxed-hero-layout relative z-10">
+          <div className="maxxed-hero-copy">
+            <motion.div {...reveal} transition={{ duration: 0.55 }} className="maxxed-hero-eyebrow">
+              <span className="maxxed-status-dot" />
+              DIGITAL SYSTEMS STUDIO <span className="maxxed-eyebrow-divider" /> EST. 2024
             </motion.div>
 
             <motion.h1
-              className="hero-title mt-7"
+              className="maxxed-hero-title mt-7"
               {...reveal}
-              transition={{ delay: 0.15, duration: 0.6 }}
+              transition={{ delay: 0.12, duration: 0.65 }}
             >
-              We Build Digital
+              We build digital
               <br />
-              <span className="gradient-text">Products That Scale.</span>
+              <span className="gradient-text">experiences that</span>
+              <br />
+              move business forward.
             </motion.h1>
 
             <motion.p
-              className="mt-7 max-w-xl text-lg leading-8 text-muted-foreground md:text-xl"
+              className="maxxed-hero-description mt-6"
               {...reveal}
-              transition={{ delay: 0.3 }}
+              transition={{ delay: 0.24, duration: 0.55 }}
             >
-              Custom websites, AI-powered tools, brand systems, and ongoing tech support—built for businesses that mean business.
+              Websites, intelligent automation and digital identities engineered to help ambitious businesses move with confidence.
             </motion.p>
 
-            <motion.div
-              className="mt-9 flex flex-wrap gap-4"
-              {...reveal}
-              transition={{ delay: 0.45 }}
-            >
-              <Link to="/contact" className="button button-primary button-lg pulse-glow">
-                Start Your Project <span>→</span>
+            <motion.div className="mt-8 flex flex-wrap gap-3" {...reveal} transition={{ delay: 0.34, duration: 0.5 }}>
+              <Link to="/contact" className="button button-primary button-lg maxxed-hero-primary">
+                Start a Project <span aria-hidden="true">↗</span>
               </Link>
-              <Link to="/portfolio" className="button button-outline button-lg">
-                See Our Work
+              <Link to="/portfolio" className="button button-outline button-lg maxxed-hero-secondary">
+                Explore Our Work <span aria-hidden="true">↓</span>
               </Link>
             </motion.div>
 
             <motion.div
-              className="mt-9 flex flex-wrap items-center gap-3 text-xs text-muted-foreground"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.65 }}
+              className="maxxed-hero-proof mt-9"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.48, duration: 0.55 }}
             >
-              <span>Built with →</span>
-              {["React", "Next.js", "TypeScript", "OpenAI", "Node.js"].map((x) => (
-                <span className="tech-pill" key={x}>{x}</span>
-              ))}
+              <div className="maxxed-proof-mark"><span /><span /><span /></div>
+              <div>
+                <strong>Strategy meets execution.</strong>
+                <span>Thoughtful digital products, built around your next move.</span>
+              </div>
             </motion.div>
           </div>
 
-          {/* Floating stat cards */}
-          <div className="hidden lg:block">
-            <StatFloat className="float-one" value="2–4 wks" label="Average Delivery Time" />
-            <StatFloat className="float-two" value="90+" label="Lighthouse Score Target" />
-            <StatFloat className="float-three" value="30 days" label="Post-Launch Support" />
-          </div>
+          <motion.div
+            className="maxxed-hero-visual"
+            onMouseMove={(event) => {
+              if (reduceMotion) return;
+              const bounds = event.currentTarget.getBoundingClientRect();
+              const x = (event.clientX - bounds.left) / bounds.width;
+              const y = (event.clientY - bounds.top) / bounds.height;
+              event.currentTarget.style.setProperty("--pointer-x", `${x * 100}%`);
+              event.currentTarget.style.setProperty("--pointer-y", `${y * 100}%`);
+              event.currentTarget.style.setProperty("--pointer-shift-x", `${(x - 0.5) * 14}px`);
+              event.currentTarget.style.setProperty("--pointer-shift-y", `${(y - 0.5) * 10}px`);
+            }}
+            onMouseLeave={(event) => {
+              event.currentTarget.style.setProperty("--pointer-x", "50%");
+              event.currentTarget.style.setProperty("--pointer-y", "50%");
+              event.currentTarget.style.setProperty("--pointer-shift-x", "0px");
+              event.currentTarget.style.setProperty("--pointer-shift-y", "0px");
+            }}
+            initial={reduceMotion ? false : { opacity: 0, scale: 0.94, y: 14 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: reduceMotion ? 0.2 : 1, delay: 0.12, ease: [0.2, 0.7, 0.2, 1] }}
+            aria-label="Abstract 3D digital sculpture surrounded by interface panels"
+            role="img"
+          >
+            <div className="maxxed-visual-vignette" aria-hidden="true" />
+            <div className="maxxed-hero-gridfloor" aria-hidden="true" />
+            <div className="maxxed-sculpture-stage" aria-hidden="true">
+              <div className="maxxed-sculpture-shadow" />
+              <div className="maxxed-sculpture-ring maxxed-sculpture-ring-a" />
+              <div className="maxxed-sculpture-ring maxxed-sculpture-ring-b" />
+              <div className="maxxed-sculpture-ring maxxed-sculpture-ring-c" />
+              <div className="maxxed-sculpture">
+                <span className="maxxed-sculpture-surface surface-a" />
+                <span className="maxxed-sculpture-surface surface-b" />
+                <span className="maxxed-sculpture-surface surface-c" />
+                <span className="maxxed-sculpture-surface surface-d" />
+              </div>
+              <span className="maxxed-sculpture-light" />
+            </div>
+
+            <motion.div className="maxxed-float-panel maxxed-panel-top" animate={reduceMotion ? undefined : { y: [0, -8, 0], rotate: [-3, -1, -3] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}>
+              <div className="maxxed-panel-label"><span /> SYSTEM STATUS</div>
+              <div className="maxxed-panel-status">All systems <b>operational</b></div>
+              <div className="maxxed-panel-bars"><i /><i /><i /><i /><i /><i /><i /><i /></div>
+            </motion.div>
+
+            <motion.div className="maxxed-float-panel maxxed-panel-side" animate={reduceMotion ? undefined : { y: [0, 9, 0], rotate: [2, 4, 2] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}>
+              <div className="maxxed-panel-label">DIGITAL ECOSYSTEM</div>
+              <div className="maxxed-ecosystem-nodes"><span>WEB</span><i /><span>AI</span><i /><span>UX</span></div>
+              <div className="maxxed-panel-caption">Connected by design</div>
+            </motion.div>
+
+            <motion.div className="maxxed-float-panel maxxed-panel-bottom" animate={reduceMotion ? undefined : { y: [0, -6, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1.1 }}>
+              <span className="maxxed-panel-orbit-icon">↗</span>
+              <div><strong>Built for what's next.</strong><span>DESIGN · ENGINEERING · GROWTH</span></div>
+            </motion.div>
+
+            <div className="maxxed-visual-index" aria-hidden="true"><span>MT / 001</span><span>FORM FOLLOWS FUNCTION</span></div>
+          </motion.div>
         </div>
 
-        <ChevronDown className="scroll-cue" />
+        <div className="maxxed-hero-bottom site-container">
+          <span><i /> INDEPENDENT DIGITAL PARTNER</span>
+          <span>SCROLL TO EXPLORE <ChevronDown size={15} /></span>
+        </div>
       </section>
 
       {/* ─── MARQUEE ─── */}
@@ -242,23 +291,68 @@ function Home() {
       {/* ─── STATS ─── */}
       <Stats />
 
-      {/* ─── FEATURED PROJECTS ─── */}
-      <section className="section-pad">
+      {/* ─── CINEMATIC SELECTED WORK ─── */}
+      <section className="section-pad maxxed-work-section">
         <div className="site-container">
-          <SectionHeading
-            label="Our work"
-            title="Projects That Drive Real Results"
-            copy="A selection of work we're proud of."
-          />
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
-            {projects.slice(0, 3).map((p) => (
-              <ProjectCard key={p.id} project={p} />
-            ))}
+          <div className="maxxed-work-heading">
+            <div>
+              <span className="maxxed-section-kicker"><i /> SELECTED TRANSMISSIONS / 2025—26</span>
+              <SectionHeading
+                label="Built in our world"
+                title={<>Good work should <span className="gradient-text">speak first.</span></>}
+                copy="A closer look at digital experiences, platforms and identities shaped around a real purpose."
+              />
+            </div>
+            <Link to="/portfolio" className="maxxed-work-all">Explore all projects <span>↗</span></Link>
           </div>
-          <div className="mt-10 text-center">
-            <Link to="/portfolio" className="button button-outline button-lg">
-              View All Projects <span>→</span>
-            </Link>
+
+          <article className="maxxed-featured-project">
+            <div className="maxxed-featured-art project-visual-a">
+              <div className="maxxed-featured-art-grid" aria-hidden="true" />
+              <div className="maxxed-art-window maxxed-art-window-back" aria-hidden="true">
+                <div className="maxxed-art-window-bar"><i /><i /><i /><span>SC / DIGITAL SHOWROOM</span></div>
+                <div className="maxxed-art-window-lines"><i /><i /><i /><i /></div>
+              </div>
+              <div className="maxxed-art-window maxxed-art-window-front" aria-hidden="true">
+                <div className="maxxed-art-brand">SC<span>.</span></div>
+                <div className="maxxed-art-headline">A clearer view<br />of what’s possible.</div>
+                <div className="maxxed-art-cta">EXPLORE THE PLATFORM <span>↗</span></div>
+                <div className="maxxed-art-orbit" />
+              </div>
+              <span className="maxxed-art-index">CASE / 001</span>
+              <span className="maxxed-art-caption">DIGITAL SHOWCASE · 2026</span>
+            </div>
+            <div className="maxxed-featured-copy">
+              <div className="maxxed-featured-meta"><span>FEATURED PROJECT</span><span>01 / 03</span></div>
+              <h3>Sunny Concepts</h3>
+              <p>A polished enterprise showcase designed to bring engineering, technology and modern solutions into one confident digital presence.</p>
+              <div className="maxxed-featured-tags"><span>Web development</span><span>Digital experience</span><span>Enterprise</span></div>
+              <div className="maxxed-featured-bottom">
+                <Link to="/portfolio" className="maxxed-featured-link">Explore the case <span>↗</span></Link>
+                <a href="https://sunnyconcepts.vercel.app" target="_blank" rel="noreferrer" className="maxxed-featured-live">VISIT LIVE SITE <span>↗</span></a>
+              </div>
+            </div>
+          </article>
+
+          <div className="maxxed-supporting-projects">
+            {projects.slice(1, 3).map((p, i) => (
+              <article className="maxxed-supporting-project" key={p.id}>
+                <div className={`maxxed-supporting-art ${p.visual}`}>
+                  <span className="maxxed-supporting-index">0{String(i + 2)}</span>
+                  <div className="maxxed-supporting-orbit" aria-hidden="true" />
+                  <div className="maxxed-supporting-window" aria-hidden="true"><i /><i /><i /><span>{p.category.toUpperCase()}</span></div>
+                </div>
+                <div className="maxxed-supporting-copy">
+                  <span>{p.category} <i /> {p.year}</span>
+                  <h3>{p.title}</h3>
+                  <p>{p.description}</p>
+                  <div className="maxxed-supporting-foot">
+                    <span>{p.isUnderConstruction ? "IN DEVELOPMENT" : "SELECTED WORK"}</span>
+                    {p.url && !p.isUnderConstruction ? <a href={p.url} target="_blank" rel="noreferrer" aria-label={`Visit ${p.title}`}>↗</a> : <Link to="/portfolio" aria-label={`Explore ${p.title}`}>↗</Link>}
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
