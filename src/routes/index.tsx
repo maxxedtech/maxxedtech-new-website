@@ -110,6 +110,22 @@ function Home() {
 
           <motion.div
             className="maxxed-hero-visual"
+            onMouseMove={(event) => {
+              if (reduceMotion) return;
+              const bounds = event.currentTarget.getBoundingClientRect();
+              const x = (event.clientX - bounds.left) / bounds.width;
+              const y = (event.clientY - bounds.top) / bounds.height;
+              event.currentTarget.style.setProperty("--pointer-x", `${x * 100}%`);
+              event.currentTarget.style.setProperty("--pointer-y", `${y * 100}%`);
+              event.currentTarget.style.setProperty("--pointer-shift-x", `${(x - 0.5) * 14}px`);
+              event.currentTarget.style.setProperty("--pointer-shift-y", `${(y - 0.5) * 10}px`);
+            }}
+            onMouseLeave={(event) => {
+              event.currentTarget.style.setProperty("--pointer-x", "50%");
+              event.currentTarget.style.setProperty("--pointer-y", "50%");
+              event.currentTarget.style.setProperty("--pointer-shift-x", "0px");
+              event.currentTarget.style.setProperty("--pointer-shift-y", "0px");
+            }}
             initial={reduceMotion ? false : { opacity: 0, scale: 0.94, y: 14 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: reduceMotion ? 0.2 : 1, delay: 0.12, ease: [0.2, 0.7, 0.2, 1] }}
@@ -275,23 +291,68 @@ function Home() {
       {/* ─── STATS ─── */}
       <Stats />
 
-      {/* ─── FEATURED PROJECTS ─── */}
-      <section className="section-pad">
+      {/* ─── CINEMATIC SELECTED WORK ─── */}
+      <section className="section-pad maxxed-work-section">
         <div className="site-container">
-          <SectionHeading
-            label="Our work"
-            title="Projects That Drive Real Results"
-            copy="A selection of work we're proud of."
-          />
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
-            {projects.slice(0, 3).map((p) => (
-              <ProjectCard key={p.id} project={p} />
-            ))}
+          <div className="maxxed-work-heading">
+            <div>
+              <span className="maxxed-section-kicker"><i /> SELECTED TRANSMISSIONS / 2025—26</span>
+              <SectionHeading
+                label="Built in our world"
+                title={<>Good work should <span className="gradient-text">speak first.</span></>}
+                copy="A closer look at digital experiences, platforms and identities shaped around a real purpose."
+              />
+            </div>
+            <Link to="/portfolio" className="maxxed-work-all">Explore all projects <span>↗</span></Link>
           </div>
-          <div className="mt-10 text-center">
-            <Link to="/portfolio" className="button button-outline button-lg">
-              View All Projects <span>→</span>
-            </Link>
+
+          <article className="maxxed-featured-project">
+            <div className="maxxed-featured-art project-visual-a">
+              <div className="maxxed-featured-art-grid" aria-hidden="true" />
+              <div className="maxxed-art-window maxxed-art-window-back" aria-hidden="true">
+                <div className="maxxed-art-window-bar"><i /><i /><i /><span>SC / DIGITAL SHOWROOM</span></div>
+                <div className="maxxed-art-window-lines"><i /><i /><i /><i /></div>
+              </div>
+              <div className="maxxed-art-window maxxed-art-window-front" aria-hidden="true">
+                <div className="maxxed-art-brand">SC<span>.</span></div>
+                <div className="maxxed-art-headline">A clearer view<br />of what’s possible.</div>
+                <div className="maxxed-art-cta">EXPLORE THE PLATFORM <span>↗</span></div>
+                <div className="maxxed-art-orbit" />
+              </div>
+              <span className="maxxed-art-index">CASE / 001</span>
+              <span className="maxxed-art-caption">DIGITAL SHOWCASE · 2026</span>
+            </div>
+            <div className="maxxed-featured-copy">
+              <div className="maxxed-featured-meta"><span>FEATURED PROJECT</span><span>01 / 03</span></div>
+              <h3>Sunny Concepts</h3>
+              <p>A polished enterprise showcase designed to bring engineering, technology and modern solutions into one confident digital presence.</p>
+              <div className="maxxed-featured-tags"><span>Web development</span><span>Digital experience</span><span>Enterprise</span></div>
+              <div className="maxxed-featured-bottom">
+                <Link to="/portfolio" className="maxxed-featured-link">Explore the case <span>↗</span></Link>
+                <a href="https://sunnyconcepts.vercel.app" target="_blank" rel="noreferrer" className="maxxed-featured-live">VISIT LIVE SITE <span>↗</span></a>
+              </div>
+            </div>
+          </article>
+
+          <div className="maxxed-supporting-projects">
+            {projects.slice(1, 3).map((p, i) => (
+              <article className="maxxed-supporting-project" key={p.id}>
+                <div className={`maxxed-supporting-art ${p.visual}`}>
+                  <span className="maxxed-supporting-index">0{String(i + 2)}</span>
+                  <div className="maxxed-supporting-orbit" aria-hidden="true" />
+                  <div className="maxxed-supporting-window" aria-hidden="true"><i /><i /><i /><span>{p.category.toUpperCase()}</span></div>
+                </div>
+                <div className="maxxed-supporting-copy">
+                  <span>{p.category} <i /> {p.year}</span>
+                  <h3>{p.title}</h3>
+                  <p>{p.description}</p>
+                  <div className="maxxed-supporting-foot">
+                    <span>{p.isUnderConstruction ? "IN DEVELOPMENT" : "SELECTED WORK"}</span>
+                    {p.url && !p.isUnderConstruction ? <a href={p.url} target="_blank" rel="noreferrer" aria-label={`Visit ${p.title}`}>↗</a> : <Link to="/portfolio" aria-label={`Explore ${p.title}`}>↗</Link>}
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
