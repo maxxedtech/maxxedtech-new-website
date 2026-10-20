@@ -151,6 +151,16 @@ export function MaxxedScene() {
 
     const onPointerMove = (event: PointerEvent) => {
       const bounds = canvas.getBoundingClientRect();
+      if (
+        event.clientX < bounds.left ||
+        event.clientX > bounds.right ||
+        event.clientY < bounds.top ||
+        event.clientY > bounds.bottom
+      ) {
+        pointer.targetX = 0;
+        pointer.targetY = 0;
+        return;
+      }
       pointer.targetX = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
       pointer.targetY = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
     };
@@ -166,8 +176,7 @@ export function MaxxedScene() {
 
     const observer = new ResizeObserver(resize);
     observer.observe(canvas);
-    canvas.addEventListener("pointermove", onPointerMove, { passive: true });
-    canvas.addEventListener("pointerleave", onPointerLeave, { passive: true });
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
     reducedMotion.addEventListener("change", onMotionPreference);
     mobile.addEventListener("change", resize);
     resize();
@@ -177,8 +186,7 @@ export function MaxxedScene() {
       disposed = true;
       window.cancelAnimationFrame(frame);
       observer.disconnect();
-      canvas.removeEventListener("pointermove", onPointerMove);
-      canvas.removeEventListener("pointerleave", onPointerLeave);
+      window.removeEventListener("pointermove", onPointerMove);
       reducedMotion.removeEventListener("change", onMotionPreference);
       mobile.removeEventListener("change", resize);
     };
