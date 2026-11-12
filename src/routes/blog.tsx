@@ -80,7 +80,16 @@ function Blog() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.35 }}
                   className="surface-card hoverable flex flex-col justify-between group cursor-pointer"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Read ${post.title}`}
                   onClick={() => setActiveArticle(post)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setActiveArticle(post);
+                    }
+                  }}
                 >
                   <div>
                     <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">

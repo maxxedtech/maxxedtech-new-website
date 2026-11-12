@@ -18,6 +18,8 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const { scrollY } = useScroll();
   const navBg = useTransform(scrollY, [0, 80], ["rgba(0,0,0,0)", "rgba(0,0,0,0.92)"]);
 
@@ -34,17 +36,38 @@ export function SiteLayout({ children }: { children: ReactNode }) {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [pathname]);
 
-  // Trap focus and close on Escape for mobile menu
+  // Keep keyboard focus inside the mobile menu while it is open.
   useEffect(() => {
     if (!open) return;
     document.body.style.overflow = "hidden";
+    const firstFocusable = menuRef.current?.querySelector<HTMLElement>(
+      "button, a[href], [tabindex]:not([tabindex='-1'])",
+    );
+    firstFocusable?.focus();
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
+      if (e.key !== "Tab" || !menuRef.current) return;
+      const focusable = Array.from(
+        menuRef.current.querySelectorAll<HTMLElement>(
+          "button, a[href], [tabindex]:not([tabindex='-1'])",
+        ),
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     window.addEventListener("keydown", handleKey);
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", handleKey);
+      menuButtonRef.current?.focus();
     };
   }, [open]);
 
@@ -85,6 +108,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           </div>
 
           <button
+            ref={menuButtonRef}
             className="icon-button lg:hidden"
             onClick={() => setOpen(true)}
             aria-label="Open menu"
@@ -100,6 +124,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={menuRef}
             id="mobile-menu"
             role="dialog"
             aria-modal="true"
@@ -224,7 +249,7 @@ function Footer() {
         {/* Services Links */}
         <FooterLinks
           title="Services"
-          links={services.map((s) => [s.shortTitle, "/services"] as const)}
+          links={services.map((s) => [s.shortTitle, `/services#${s.slug}`] as const)}
         />
 
         {/* Contact */}

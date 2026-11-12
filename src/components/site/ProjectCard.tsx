@@ -33,8 +33,21 @@ export function ProjectCard({
       onMouseMove={tilt}
       onMouseLeave={reset}
       className="project-card"
+      role={project.isUnderConstruction ? undefined : "button"}
+      tabIndex={project.isUnderConstruction ? undefined : 0}
+      aria-label={project.isUnderConstruction ? undefined : `View details for ${project.title}`}
       onClick={() => {
         if (!project.isUnderConstruction) onOpen?.(project);
+      }}
+      onKeyDown={(event) => {
+        if (
+          event.target === event.currentTarget &&
+          !project.isUnderConstruction &&
+          (event.key === "Enter" || event.key === " ")
+        ) {
+          event.preventDefault();
+          onOpen?.(project);
+        }
       }}
       style={{ transition: "transform 0.15s ease, border-color 0.25s" }}
     >

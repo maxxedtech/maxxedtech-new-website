@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Eye, Handshake, Linkedin, Lightbulb, ShieldCheck, Sparkles, Target, Twitter } from "lucide-react";
+import { Eye, Handshake, Lightbulb, ShieldCheck, Sparkles, Target } from "lucide-react";
 import { CTASection, InnerHero, SectionHeading } from "@/components/site/Primitives";
 import { pageHead } from "@/lib/seo";
 
@@ -95,14 +95,6 @@ function About() {
               <div className="avatar mx-auto h-24 w-24 text-2xl">DA</div>
               <h3 className="card-title mt-5">David Adamson</h3>
               <p className="mt-1 text-sm text-primary">Founder & Lead Developer</p>
-              <div className="mt-5 flex justify-center gap-3">
-                <a className="social-button" href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-                  <Linkedin />
-                </a>
-                <a className="social-button" href="https://x.com" target="_blank" rel="noreferrer" aria-label="Twitter / X">
-                  <Twitter />
-                </a>
-              </div>
             </motion.article>
           </div>
         </div>

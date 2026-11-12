@@ -8,8 +8,8 @@ export const sendContactMessage = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const RESEND_API_KEY = process.env["RESEND_API_KEY"];
     if (!RESEND_API_KEY) {
-      console.info("Enquiry received successfully (demo/local mode):", data);
-      return { ok: true as const };
+      console.error("Contact form is not configured: RESEND_API_KEY is missing");
+      return { ok: false as const };
     }
     const rows = [
       ["Name", data.name],

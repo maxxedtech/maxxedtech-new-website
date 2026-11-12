@@ -29,7 +29,7 @@ function TermsOfService() {
 
           <h2>1. Acceptance of Terms</h2>
           <p>
-            By accessing this website or engaging {COMPANY.name} Ltd ("Maxxed Tech") for any digital services, you confirm you have read, understood, and agree to be bound by these Terms of Service. If you are acting on behalf of a business entity, you warrant that you are authorized to accept these terms on that entity's behalf.
+            By accessing this website or engaging {COMPANY.name} ("Maxxed Tech") for any digital services, you confirm you have read, understood, and agree to be bound by these Terms of Service. If you are acting on behalf of a business entity, you warrant that you are authorized to accept these terms on that entity's behalf.
           </p>
 
           <h2>2. Scope of Services</h2>
@@ -62,7 +62,7 @@ function TermsOfService() {
 
           <h2>7. Governing Standards</h2>
           <p>
-            These terms are governed by standard commercial and intellectual property practices for digital software services.
+            These terms are governed by the applicable laws of Nigeria. Any project-specific terms in an agreed Statement of Work or Project Proposal take precedence where they conflict with these general terms.
           </p>
 
           <h2>8. Contact</h2>

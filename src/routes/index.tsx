@@ -109,7 +109,7 @@ function Home() {
               transition={{ delay: 0.65 }}
             >
               <span>Built with →</span>
-              {["React", "Next.js", "TypeScript", "OpenAI", "Node.js"].map((x) => (
+              {["React", "TanStack Start", "TypeScript", "OpenAI", "Node.js"].map((x) => (
                 <span className="tech-pill" key={x}>{x}</span>
               ))}
             </motion.div>

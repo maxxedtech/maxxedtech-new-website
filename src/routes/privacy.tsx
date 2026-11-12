@@ -29,7 +29,7 @@ function PrivacyPolicy() {
 
           <h2>1. Overview</h2>
           <p>
-            At {COMPANY.name} Ltd ("Maxxed Tech", "we", "us", or "our"), respecting your privacy is fundamental to how we engineer and deliver technology solutions. This policy outlines our standards regarding data collection, protection, and utilization when you interact with our website or engage our consulting and development services.
+            At {COMPANY.name} ("Maxxed Tech", "we", "us", or "our"), respecting your privacy is fundamental to how we engineer and deliver technology solutions. This policy outlines our standards regarding data collection, protection, and utilization when you interact with our website or engage our consulting and development services.
           </p>
 
           <h2>2. Information We Collect</h2>
@@ -37,9 +37,8 @@ function PrivacyPolicy() {
             We collect information provided directly by you when you request a proposal, contact us via inquiry forms, or communicate with our technical teams:
           </p>
           <ul>
-            <li><strong>Contact Credentials:</strong> Full name, corporate email address, phone number, and company name.</li>
+            <li><strong>Contact Credentials:</strong> Full name, email address, and optional phone number.</li>
             <li><strong>Project Specifications:</strong> Scope details, architecture requirements, timeline estimates, and budget ranges.</li>
-            <li><strong>Technical Telemetry:</strong> Anonymized interaction metrics, device types, and browser specifications collected to optimize performance.</li>
           </ul>
 
           <h2>3. How We Use Information</h2>
