@@ -1,452 +1,52 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useInView } from "framer-motion";
-import { Check, ChevronDown, Code2, HeartHandshake, Lightbulb, Phone, Rocket, Shield, Users, Zap } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { CTASection, SectionHeading } from "@/components/site/Primitives";
-import { ProjectCard } from "@/components/site/ProjectCard";
-import { projects, services, testimonials } from "@/data/site";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AmbientCanvas, HeroLattice, Intro3DOverlay } from "@/components/site/VisualSystems";
 
-const description =
-  "Maxxed Tech builds high-performing websites, AI tools, brand systems and ongoing support for ambitious businesses worldwide.";
+const description = "MaxxedTech Ltd builds precise digital products, brand systems, and intelligent automation for ambitious businesses.";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "MaxxedTech Ltd | Modern Digital Agency & AI Solutions" },
-      { name: "description", content: description },
-      { property: "og:title", content: "MaxxedTech Ltd | Modern Digital Agency & AI Solutions" },
-      { property: "og:description", content: description },
-      { property: "og:image", content: "https://maxxedtech.com/og-image.jpg" },
-      { property: "og:url", content: "https://maxxedtech.com/" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://maxxedtech.com/og-image.jpg" },
-    ],
-    links: [{ rel: "canonical", href: "https://maxxedtech.com/" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          name: "MaxxedTech Ltd",
-          url: "https://maxxedtech.com",
-          logo: "https://maxxedtech.com/images/logo/loading-logo.png",
-          contactPoint: {
-            "@type": "ContactPoint",
-            telephone: "+234-806-625-7117",
-            contactType: "customer service",
-          },
-        }),
-      },
-    ],
-  }),
-  component: Home,
-});
+type Detail = { index: string; title: string; kind: string; icon: string; status: string; description: string; tags: string[]; deliverables: string[]; timeline: string; url?: string };
 
-const reveal = { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 } };
+const projects: Detail[] = [
+  { index: "01", title: "Sunny Concepts", kind: "Brand & Commerce System", icon: "ph-aperture", status: "Live production", description: "A sharp commerce and brand system for a business moving from local recognition to digital scale.", tags: ["Brand architecture", "Commerce", "React", "Conversion"], deliverables: ["Editorial brand direction", "Responsive commerce system", "Lead and checkout flows", "Analytics foundation"], timeline: "6 weeks", url: "https://sunnyconcepts.vercel.app" },
+  { index: "02", title: "Amada International Hotel", kind: "Luxury Hospitality Architecture", icon: "ph-buildings", status: "Live hospitality", description: "A premium direct-reservation experience that gives Amada a clearer digital lobby and a faster path to booking.", tags: ["Hospitality", "Reservations", "Luxury UI", "SEO"], deliverables: ["Direct reservation architecture", "Room and amenity storytelling", "Mobile-first booking path", "Technical SEO setup"], timeline: "9 weeks", url: "https://amadainternationalhotel.com/" },
+  { index: "03", title: "Campuspreneur", kind: "Venture Ecosystem Platform", icon: "ph-hexagon", status: "Under construction", description: "A connected platform for student founders, mentors, and campus ventures to discover one another and ship faster.", tags: ["Platform", "Venture", "Community", "TypeScript"], deliverables: ["Founder onboarding system", "Opportunity and mentor directory", "Incubation workflow", "Modular design system"], timeline: "8 weeks", url: "https://campusprenuer.vercel.app" },
+  { index: "04", title: "Self Studio", kind: "Creative Direction & Spatial Identity", icon: "ph-frame-corners", status: "Under construction", description: "A multidisciplinary studio identity built around spatial rhythm, creative confidence, and a distinct digital presence.", tags: ["Identity", "Spatial", "Art direction", "Studio"], deliverables: ["Identity system", "Spatial visual language", "Portfolio architecture", "Launch-ready content kit"], timeline: "5 weeks" },
+];
+
+const capabilities: Detail[] = [
+  { index: "01", title: "Web Design & Engineering", kind: "Core capability", icon: "ph-layout", status: "Available", description: "Performance-led interfaces and production-ready systems that make complex offers feel obvious.", tags: ["UX systems", "React", "Accessibility"], deliverables: ["Information architecture", "Interface system", "Full-stack implementation", "Launch QA"], timeline: "3–9 weeks" },
+  { index: "02", title: "AI Solutions & Automation", kind: "Core capability", icon: "ph-git-fork", status: "Available", description: "Practical automations that answer, route, qualify, and keep your operation moving after hours.", tags: ["AI workflows", "Agents", "Integrations"], deliverables: ["Workflow mapping", "Knowledge assistant", "CRM and API integrations", "Monitoring"], timeline: "3–7 weeks" },
+  { index: "03", title: "Brand Identity Systems", kind: "Core capability", icon: "ph-pen-nib", status: "Available", description: "Distinctive visual systems that give every touchpoint the same confident point of view.", tags: ["Positioning", "Art direction", "Guidelines"], deliverables: ["Brand strategy", "Identity system", "Typography and color", "Usage guidelines"], timeline: "3–6 weeks" },
+  { index: "04", title: "Managed Platform Care", kind: "Core capability", icon: "ph-shield-check", status: "Available", description: "A calm technical backstop for security, performance, content, and the small fixes that compound.", tags: ["Security", "Support", "Performance"], deliverables: ["Monitoring", "Security updates", "Content operations", "Monthly reporting"], timeline: "30-day care" },
+  { index: "05", title: "Digital & Search Optimization", kind: "Core capability", icon: "ph-chart-line-up", status: "Available", description: "Sharper technical foundations and conversion paths that help the right people find and choose you.", tags: ["SEO", "CRO", "Analytics"], deliverables: ["Technical audit", "Core Web Vitals", "Search structure", "Conversion review"], timeline: "3–5 weeks" },
+];
+
+export const Route = createFileRoute("/")({ head: () => ({ meta: [{ title: "MaxxedTech Ltd — Precision digital products" }, { name: "description", content: description }, { property: "og:title", content: "MaxxedTech Ltd — Precision digital products" }, { property: "og:description", content: description }, { property: "og:image", content: "https://maxxedtech.com/og-image.jpg" }, { property: "og:type", content: "website" }], links: [{ rel: "canonical", href: "https://maxxedtech.com/" }] }), component: Home });
 
 function Home() {
-  return (
-    <>
-      {/* ─── HERO ─── */}
-      <section className="home-hero swiss-drafting-bg">
-        <div className="dot-grid" />
-        <div className="hero-glow hero-glow-a" />
-        <div className="hero-glow hero-glow-b" />
-        <div className="noise" />
-
-        <div className="site-container relative z-10 flex min-h-screen items-center pt-24">
-          <div className="max-w-4xl lg:max-w-3xl">
-            <motion.div
-              {...reveal}
-              transition={{ duration: 0.5 }}
-              className="hero-badge"
-            >
-              <img
-                src="/images/logo/favicon-logo.png"
-                alt=""
-                className="h-4 w-4 object-contain opacity-80"
-              />
-              MaxxedTech Ltd — Est. 2024
-            </motion.div>
-
-            <motion.h1
-              className="hero-title mt-7"
-              {...reveal}
-              transition={{ delay: 0.15, duration: 0.6 }}
-            >
-              We Build Digital
-              <br />
-              <span className="gradient-text">Products That Scale.</span>
-            </motion.h1>
-
-            <motion.p
-              className="mt-7 max-w-xl text-lg leading-8 text-muted-foreground md:text-xl"
-              {...reveal}
-              transition={{ delay: 0.3 }}
-            >
-              Custom websites, AI-powered tools, brand systems, and ongoing tech support—built for businesses that mean business.
-            </motion.p>
-
-            <motion.div
-              className="mt-9 flex flex-wrap gap-4"
-              {...reveal}
-              transition={{ delay: 0.45 }}
-            >
-              <Link to="/contact" className="button button-primary liquid-cta button-lg pulse-glow">
-                Start Your Project <span>→</span>
-              </Link>
-              <Link to="/portfolio" className="button button-outline button-lg">
-                See Our Work
-              </Link>
-            </motion.div>
-
-            <motion.div
-              className="mt-9 flex flex-wrap items-center gap-3 text-xs text-muted-foreground"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.65 }}
-            >
-              <span>Built with →</span>
-              {["React", "TanStack Start", "TypeScript", "OpenAI", "Node.js"].map((x) => (
-                <span className="tech-pill" key={x}>{x}</span>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Floating stat cards */}
-          <div className="hidden lg:block">
-            <StatFloat className="float-one" value="2–4 wks" label="Average Delivery Time" />
-            <StatFloat className="float-two" value="90+" label="Lighthouse Score Target" />
-            <StatFloat className="float-three" value="30 days" label="Post-Launch Support" />
-          </div>
-        </div>
-
-        <ChevronDown className="scroll-cue" />
-      </section>
-
-      {/* ─── MARQUEE ─── */}
-      <Marquee />
-
-      {/* ─── SERVICES ─── */}
-      <section className="section-pad">
-        <div className="site-container">
-          <SectionHeading label="What we do" title="Every Service Your Business Needs" />
-          <div className="bento-grid mt-12">
-            {services.map((s, i) => {
-              const Icon = s.icon;
-              return (
-                <motion.article
-                  key={s.slug}
-                  className={`service-card ${i === 0 ? "featured-service" : ""}`}
-                  initial={{ opacity: 0, y: 28 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.07, duration: 0.5 }}
-                  whileHover={{ y: -4 }}
-                >
-                  <div className="icon-tile">
-                    <Icon />
-                  </div>
-                  {i === 0 && (
-                    <span className="tag absolute right-6 top-6">Most Popular</span>
-                  )}
-                  <h3 className="card-title mt-6">{s.title}</h3>
-                  <p className="mt-3 text-muted-foreground">{s.description}</p>
-                  {i === 0 && (
-                    <ul className="mt-5 grid gap-2 sm:grid-cols-2">
-                      {s.features.map((f) => (
-                        <li className="check-line" key={f}>
-                          <Check />
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <Link to="/services" className="card-link mt-6">
-                    Learn More <span>→</span>
-                  </Link>
-                </motion.article>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── WHY US ─── */}
-      <section className="section-pad bg-surface-deep">
-        <div className="site-container grid gap-14 lg:grid-cols-2 lg:items-center">
-          <div>
-            <SectionHeading
-              label="Why choose us"
-              title={
-                <>
-                  Partner With a Team That{" "}
-                  <span className="gradient-text">Delivers</span>
-                </>
-              }
-              copy="You need a partner who understands the goal, communicates clearly, and ships work that helps your business move forward."
-            />
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              {[
-                "Modern, responsive designs",
-                "SEO optimization included",
-                "Fast page load speeds",
-                "Security best practices",
-                "Dedicated project manager",
-                "30-day post-launch support",
-              ].map((x) => (
-                <motion.div
-                  className="check-line"
-                  key={x}
-                  initial={{ opacity: 0, x: -12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <Check />
-                  {x}
-                </motion.div>
-              ))}
-            </div>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {(
-              [
-                [Zap, "Custom-Built Solutions"],
-                [Shield, "Scalable Technology"],
-                [Users, "Startup-Friendly Pricing"],
-                [HeartHandshake, "Ongoing Support"],
-              ] as const
-            ).map(([Icon, title]) => (
-              <motion.article
-                className="reason-card"
-                key={String(title)}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -4, borderColor: "rgba(53,189,181,0.5)" }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="icon-tile">
-                  <Icon />
-                </div>
-                <h3 className="card-title mt-5 text-xl">{String(title)}</h3>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── STATS ─── */}
-      <Stats />
-
-      {/* ─── FEATURED PROJECTS ─── */}
-      <section className="section-pad">
-        <div className="site-container">
-          <SectionHeading
-            label="Our work"
-            title="Projects That Drive Real Results"
-            copy="A selection of work we're proud of."
-          />
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
-            {projects.slice(0, 3).map((p) => (
-              <ProjectCard key={p.id} project={p} />
-            ))}
-          </div>
-          <div className="mt-10 text-center">
-            <Link to="/portfolio" className="button button-outline button-lg">
-              View All Projects <span>→</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── TESTIMONIALS ─── */}
-      <Testimonials />
-
-      {/* ─── PROCESS ─── */}
-      <section className="section-pad">
-        <div className="site-container">
-          <SectionHeading
-            center
-            label="Our process"
-            title="From Idea to Launch in 4 Simple Steps"
-          />
-          <div className="process-grid mt-14">
-            {(
-              [
-                [Phone, "Discovery Call", "We learn your goals, timeline, and budget in a free 30-minute call."],
-                [Lightbulb, "Strategy & Design", "We create wireframes, design mockups, and a clear project roadmap."],
-                [Code2, "Build & Review", "We build your solution with regular check-ins and revision rounds."],
-                [Rocket, "Launch & Support", "We go live, monitor performance, and support you for 30 days post-launch."],
-              ] as const
-            ).map(([Icon, title, copy], i) => (
-              <motion.article
-                className="process-step"
-                key={String(title)}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.12, duration: 0.5 }}
-              >
-                <span className="step-number">0{i + 1}</span>
-                <div className="icon-tile mx-auto">
-                  <Icon />
-                </div>
-                <h3 className="card-title mt-5 text-xl">{String(title)}</h3>
-                <p className="mt-3 text-sm text-muted-foreground">{String(copy)}</p>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <CTASection />
-    </>
-  );
+  const [detail, setDetail] = useState<Detail | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [introVisible, setIntroVisible] = useState(true);
+  useEffect(() => { const close = (event: KeyboardEvent) => { if (event.key === "Escape") { setDetail(null); setMenuOpen(false); } }; window.addEventListener("keydown", close); return () => window.removeEventListener("keydown", close); }, []);
+  const copyEmail = async () => { try { await navigator.clipboard.writeText("contact@maxxedtech.com"); setCopied(true); window.setTimeout(() => setCopied(false), 2400); } catch { /* embedded contexts can deny clipboard access */ } };
+  return <div className="specimen-page swiss-drafting-bg">
+    <AmbientCanvas /><Intro3DOverlay visible={introVisible} onExit={() => setIntroVisible(false)} />
+    <div className="specimen-bar"><span className="status-dot" /> <span>Systems operational</span><button onClick={() => setIntroVisible(true)}><i className="ph-light ph-play-circle" /> Replay 3D Intro</button><span className="specimen-edition">Edition 2026</span></div>
+    <header className="specimen-nav liquid-pill"><Link to="/" className="specimen-brand"><i className="ph-light ph-compass" /><span>MAXXEDTECH</span></Link><nav className="specimen-links" aria-label="Swiss index navigation"><a href="#work">01 <span>Selected Work</span></a><a href="#capabilities">02 <span>Capabilities</span></a><a href="#protocol">03 <span>Architecture</span></a><a href="#inquiry">04 <span>Inquiry</span></a></nav><Link to="/contact" className="button liquid-cta button-sm">Start Project <i className="ph-light ph-arrow-up-right" /></Link><button className="icon-button specimen-menu-button" onClick={() => setMenuOpen(true)} aria-label="Open navigation"><i className="ph-light ph-list" /></button></header>
+    {menuOpen && <div className="specimen-mobile-menu liquid-glass"><button className="icon-button self-end" onClick={() => setMenuOpen(false)} aria-label="Close navigation"><i className="ph-light ph-x" /></button>{[["01", "Selected Work", "#work"], ["02", "Capabilities", "#capabilities"], ["03", "Architecture", "#protocol"], ["04", "Inquiry", "#inquiry"]].map(([n, label, href]) => <a key={n} href={href} onClick={() => setMenuOpen(false)}><span>{n}</span>{label}<i className="ph-light ph-arrow-up-right" /></a>)}</div>}
+    <main>
+      <section className="specimen-hero site-container"><div className="hero-copy"><p className="telemetry">MXT / 00.01 / Digital systems studio</p><h1>Precision digital products built with <em>timeless clarity.</em></h1><p className="hero-lede">We design and engineer high-conviction websites, intelligent tools, and brand systems for teams ready to move with intent.</p><div className="hero-actions"><Link to="/contact" className="button liquid-cta button-lg">Start your project <i className="ph-light ph-arrow-up-right" /></Link><a href="#work" className="button button-outline button-lg">View selected work <i className="ph-light ph-arrow-down" /></a></div><div className="metric-strip">{[["3–9 Wks", "Delivery window"], ["99.4%", "Lighthouse core"], ["30 Days", "Post-launch care"]].map(([value, label]) => <div key={label}><strong>{value}</strong><span>{label}</span></div>)}</div></div><div className="lattice-chamber liquid-glass"><div className="chamber-head"><span>Spatial chamber / A-01</span><span className="status-live"><span className="status-dot" /> LIVE</span></div><div className="lattice-viewport"><HeroLattice onTelemetry={(theta, phi) => { const host = document.getElementById("hero-telemetry"); if (host) host.textContent = `θ ${theta}°   φ ${phi}°`; }} /><div id="hero-telemetry" className="hero-telemetry">θ 045.28°   φ 118.60°</div></div><div className="chamber-footer"><span>Live gyroscopic lattice</span><button className="neu-key reset-key" onClick={() => window.dispatchEvent(new CustomEvent("maxxed:hero-reset"))}><i className="ph-light ph-arrow-counter-clockwise" /> Reset</button></div></div></section>
+      <section id="work" className="section-pad specimen-section"><div className="site-container"><SectionIntro index="01" eyebrow="Selected work" title="Useful beauty, built for the real world." copy="Four active systems. Each one designed to make a business clearer, more useful, and easier to choose." /><div className="work-matrix">{projects.map((project) => <ProjectSpecimen key={project.index} project={project} onOpen={setDetail} />)}</div></div></section>
+      <section id="capabilities" className="section-pad specimen-section"><div className="site-container"><SectionIntro index="02" eyebrow="Core capabilities" title="A small studio with a wide operating range." copy="Strategy, design, engineering, and care held together by one clear point of view." /><div className="capability-grid">{capabilities.map((item) => <button className="capability-card liquid-glass" key={item.index} onClick={() => setDetail(item)}><span className="card-index">{item.index}</span><i className={`ph-light ${item.icon}`} /><h3>{item.title}</h3><p>{item.description}</p><span className="card-open">Open specification <i className="ph-light ph-arrow-up-right" /></span></button>)}</div></div></section>
+      <section id="protocol" className="section-pad specimen-section protocol-section"><div className="site-container"><SectionIntro index="03" eyebrow="Execution protocol" title="A disciplined 3–9 week path from signal to system." copy="Every engagement is structured to keep momentum visible, decisions sharp, and the launch useful from day one." /><div className="protocol-grid">{[["PHASE 01 · WK 1", "Diagnostic & Grid", "Align the brief, audit the terrain, and establish the measurable grid."], ["PHASE 02 · WKS 2–3", "Spatial Prototyping", "Shape the structure, interaction model, and first high-fidelity direction."], ["PHASE 03 · WKS 4–8", "Full-Stack Build", "Engineer the system, connect the content, and review in tight loops."], ["PHASE 04 · WK 9+", "Launch & 30-Day Care", "Ship with confidence, monitor the system, and stay close through the first month."]].map(([phase, title, copy], i) => <article className="protocol-step" key={phase}><span>{phase}</span><b>0{i + 1}</b><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
+      <section id="inquiry" className="section-pad inquiry-section"><div className="site-container inquiry-grid"><div><SectionIntro index="04" eyebrow="Inquiry" title="Bring us the hard, important thing." copy="Tell us what needs to be clearer, faster, or more alive. We’ll return with a precise next step." /><div className="email-card liquid-glass"><span className="telemetry">Direct electronic mail</span><a href="mailto:contact@maxxedtech.com">contact@maxxedtech.com</a><button className="button button-outline" onClick={copyEmail}><i className="ph-light ph-copy" /> Copy address</button></div></div><form className="brief-form neu-well" onSubmit={(e) => e.preventDefault()}><label>Your name<input required placeholder="Amina Okafor" /></label><label>Work email<input required type="email" placeholder="you@company.com" /></label><label>What are we building?<textarea required rows={4} placeholder="A new digital product, a sharper brand, a more useful system..." /></label><button className="button liquid-cta button-lg" type="submit">Send brief <i className="ph-light ph-arrow-up-right" /></button></form></div></section>
+    </main>
+    {detail && <DetailModal detail={detail} onClose={() => setDetail(null)} />}{copied && <div className="copy-toast liquid-pill"><i className="ph-light ph-check-circle" /> Address copied to clipboard</div>}
+  </div>;
 }
 
-function StatFloat({
-  value,
-  label,
-  className,
-}: {
-  value: string;
-  label: string;
-  className: string;
-}) {
-  return (
-    <motion.div
-      className={`float-stat ${className}`}
-      whileHover={{ scale: 1.06, boxShadow: "0 0 30px rgba(53,189,181,0.25)" }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
-    >
-      <b>{value}</b>
-      <span>{label}</span>
-    </motion.div>
-  );
-}
-
-function Marquee() {
-  const text = [
-    "Web Development",
-    "AI Automation",
-    "Brand Identity",
-    "UI/UX Design",
-    "SEO Optimization",
-    "Tech Support",
-    "E-Commerce",
-    "Mobile Apps",
-  ];
-  return (
-    <div className="marquee">
-      <div className="marquee-track">
-        {[...text, ...text].map((x, i) => (
-          <span key={`${x}-${i}`}>
-            {x}
-            <b>◆</b>
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Stats() {
-  return (
-    <section className="stats-band section-pad">
-      <div className="site-container grid grid-cols-2 gap-8 lg:grid-cols-4">
-        {[
-          ["2–4 wks", "Typical Launch Window", "Lean delivery for websites, funnels & MVP builds."],
-          ["90+", "Performance Score Target", "Speed, accessibility & SEO from day one."],
-          ["24/7", "Digital Presence", "Automations that keep working after office hours."],
-          ["30 Days", "Post-Launch Support", "Fixes and guidance while your site finds its feet."],
-        ].map(([v, l, d]) => (
-          <motion.div
-            key={l}
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-          >
-            <strong className="stat-value">{v}</strong>
-            <h3 className="mt-3 font-semibold">{l}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{d}</p>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function Testimonials() {
-  const [current, setCurrent] = useState(0);
-  const paused = useRef(false);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      if (!paused.current) setCurrent((x) => (x + 1) % testimonials.length);
-    }, 5500);
-    return () => clearInterval(id);
-  }, []);
-
-  const t = testimonials[current] ?? testimonials[0];
-
-  return (
-    <section className="section-pad bg-surface-deep">
-      <div className="site-container">
-        <SectionHeading center label="Client stories" title="What Our Clients Say" />
-        <div
-          className="testimonial-wrap mt-12"
-          onMouseEnter={() => (paused.current = true)}
-          onMouseLeave={() => (paused.current = false)}
-        >
-          <button
-            className="carousel-arrow left-0"
-            onClick={() => setCurrent((current + testimonials.length - 1) % testimonials.length)}
-            aria-label="Previous testimonial"
-          >
-            ←
-          </button>
-          <motion.article
-            key={current}
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -30 }}
-            transition={{ duration: 0.35, ease: "easeInOut" }}
-            className="testimonial-card"
-          >
-            <div className="stars">★★★★★</div>
-            <blockquote>"{t?.quote}"</blockquote>
-            <div className="mt-7 flex items-center gap-4">
-              <div className="avatar">{t?.initials}</div>
-              <div>
-                <strong>{t?.name}</strong>
-                <p className="text-sm text-muted-foreground">{t?.role}</p>
-              </div>
-            </div>
-          </motion.article>
-          <button
-            className="carousel-arrow right-0"
-            onClick={() => setCurrent((current + 1) % testimonials.length)}
-            aria-label="Next testimonial"
-          >
-            →
-          </button>
-        </div>
-        <div className="mt-6 flex justify-center gap-2">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              className={`carousel-dot ${i === current ? "carousel-dot-active" : ""}`}
-              onClick={() => setCurrent(i)}
-              aria-label={`Show testimonial ${i + 1}`}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+function SectionIntro({ index, eyebrow, title, copy }: { index: string; eyebrow: string; title: string; copy: string }) { return <div className="section-intro"><span className="section-index">{index}</span><div><p className="eyebrow">{eyebrow}</p><h2>{title}</h2><p>{copy}</p></div></div>; }
+function ProjectSpecimen({ project, onOpen }: { project: Detail; onOpen: (detail: Detail) => void }) { return <article className="project-specimen liquid-glass"><div className="project-topline"><span>{project.index} / {project.status}</span><i className={`ph-light ${project.icon}`} /></div><div className="project-visual"><div className="project-wireframe"><span /><span /><span /><span /></div></div><div className="project-body"><p className="eyebrow">{project.kind}</p><h3>{project.title}</h3><p>{project.description}</p><div className="tag-row">{project.tags.slice(0, 3).map((tag) => <span key={tag}>{tag}</span>)}</div><div className="project-actions"><button className="button button-outline button-sm" onClick={() => onOpen(project)}>{project.status === "Under construction" ? "Build specs" : "Case dossier"} <i className="ph-light ph-arrow-up-right" /></button>{project.url && <a className="text-link" href={project.url} target="_blank" rel="noopener noreferrer">Visit live <i className="ph-light ph-arrow-up-right" /></a>}</div></div></article>; }
+function DetailModal({ detail, onClose }: { detail: Detail; onClose: () => void }) { return <div className="detail-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}><article id="detail-modal" className="detail-modal liquid-glass" role="dialog" aria-modal="true" aria-labelledby="detail-title"><button className="icon-button detail-close" onClick={onClose} aria-label="Close specification"><i className="ph-light ph-x" /></button><p className="eyebrow">{detail.index} / {detail.kind}</p><i className={`ph-light ${detail.icon} detail-icon`} /><h2 id="detail-title">{detail.title}</h2><p className="detail-description">{detail.description}</p><div className="detail-meta"><span>Status <b>{detail.status}</b></span><span>Timeline <b>{detail.timeline}</b></span></div><div className="detail-columns"><div><span className="telemetry">Deliverables</span><ul>{detail.deliverables.map((item) => <li key={item}><i className="ph-light ph-check" />{item}</li>)}</ul></div><div><span className="telemetry">Tags</span><div className="tag-row mt-3">{detail.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div></div>{detail.url && <a className="button liquid-cta button-lg mt-8" href={detail.url} target="_blank" rel="noopener noreferrer">Open live system <i className="ph-light ph-arrow-up-right" /></a>}</article></div>; }

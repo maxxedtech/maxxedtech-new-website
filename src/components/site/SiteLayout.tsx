@@ -76,7 +76,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       {/* Sticky Nav */}
       <motion.header
         style={{ backgroundColor: navBg }}
-        className={`site-nav liquid-pill ${scrolled ? "site-nav-scrolled" : ""}`}
+        className={`site-nav liquid-pill ${pathname === "/" ? "homepage-global-nav-hidden" : ""} ${scrolled ? "site-nav-scrolled" : ""}`}
       >
         <div className="site-container flex h-20 items-center justify-between">
           <Brand />
