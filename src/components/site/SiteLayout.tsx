@@ -76,7 +76,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       {/* Sticky Nav */}
       <motion.header
         style={{ backgroundColor: navBg }}
-        className={`site-nav ${scrolled ? "site-nav-scrolled" : ""}`}
+        className={`site-nav liquid-pill ${scrolled ? "site-nav-scrolled" : ""}`}
       >
         <div className="site-container flex h-20 items-center justify-between">
           <Brand />
@@ -102,7 +102,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           </nav>
 
           <div className="hidden lg:block">
-            <Link to="/contact" className="button button-primary button-sm pulse-glow">
+            <Link to="/contact" className="button button-primary liquid-cta button-sm pulse-glow">
               Get Started <span>→</span>
             </Link>
           </div>

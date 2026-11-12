@@ -8,9 +8,9 @@
 /* @font-face { font-family: "Nevera"; src: url("/fonts/Nevera-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; } */
 
 @theme inline {
-  --font-display: "Nevera", "Plus Jakarta Sans", sans-serif;
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -43,9 +43,9 @@
 
 :root {
   --radius: 0.5rem;
-  --background: #05090d;
-  --foreground: #ffffff;
-  --card: #101820;
+  --background: #000000;
+  --foreground: #f8f9fa;
+  --card: #1a1a1a;
   --secondary: #1a1a1a;
   --primary: #35bdb5;
   --primary-deep: #007a73;
@@ -56,23 +56,31 @@
   --destructive: #ef4444;
   --success: #22c55e;
   --whatsapp: #25d366;
-  --surface-deep: #081117;
-  --surface-band: #0a131a;
+  --surface-deep: #000000;
+  --surface-band: #1a1a1a;
   --light: #f8f9fa;
   --gradient: linear-gradient(135deg, #35bdb5 0%, #007a73 100%);
   --glow: rgba(53, 189, 181, 0.15);
+  --void: #000000;
+  --slate-surface: #1a1a1a;
+  --light-accent: #e6f7f6;
+  --neutral-light: #f8f9fa;
+  --neutral-mid: #8a94a0;
+  --pure-white: #ffffff;
 }
 
 @layer base {
   * { border-color: var(--color-border); }
   html { scroll-behavior: smooth; }
+  html, body { overflow-x: hidden; }
   body { background: var(--background); color: var(--foreground); font-family: var(--font-sans); font-size: 16px; -webkit-font-smoothing: antialiased; }
   h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; }
   ::selection { background: var(--primary); color: #000; }
 }
 
 @layer components {
-  .site-container { width: 100%; max-width: 1240px; margin-inline: auto; padding-inline: 1.25rem; }
+  .site-container { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); }
+  @media (min-width: 640px) { .site-container { padding-inline: 1.5rem; } }
   @media (min-width: 768px) { .site-container { padding-inline: 2rem; } }
   .section-pad { padding-block: 6rem; }
   @media (min-width: 1024px) { .section-pad { padding-block: 8rem; } }
@@ -90,6 +98,7 @@
 
   /* Buttons */
   .button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; border-radius: 8px; font-weight: 600; transition: transform .2s, filter .2s, box-shadow .2s, background .2s, color .2s; }
+  .button, .nav-link, .footer-link, .social-button, button, a { min-height: 44px; }
   .button:hover { transform: translateY(-1px); }
   .button:active { transform: scale(.97); transition-duration: .1s; }
   .button:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
@@ -297,5 +306,26 @@
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* 2026 MaxxedTech visual system: Swiss structure, liquid refraction, tactile controls. */
+@layer components {
+  .swiss-drafting-bg {
+    background-color: #000;
+    background-image: linear-gradient(rgba(248,249,250,.032) 1px, transparent 1px), linear-gradient(90deg, rgba(248,249,250,.032) 1px, transparent 1px), radial-gradient(circle at 78% 18%, rgba(53,189,181,.18), transparent 28rem), radial-gradient(circle at 8% 82%, rgba(0,122,115,.16), transparent 26rem);
+    background-size: 72px 72px, 72px 72px, auto, auto;
+  }
+  .liquid-glass { position: relative; isolation: isolate; background: linear-gradient(145deg, rgba(255,255,255,.08), rgba(26,26,26,.52)); border: 1px solid rgba(230,247,246,.17); box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 18px 44px rgba(0,0,0,.24); backdrop-filter: blur(28px) saturate(190%); -webkit-backdrop-filter: blur(28px) saturate(190%); }
+  .liquid-glass::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, rgba(255,255,255,.52), rgba(230,247,246,.16) 28%, transparent 54%, rgba(53,189,181,.4)); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+  .liquid-pill { background: rgba(26,26,26,.62); border: 1px solid rgba(230,247,246,.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 12px 32px rgba(0,0,0,.28); backdrop-filter: blur(32px) saturate(210%); -webkit-backdrop-filter: blur(32px) saturate(210%); }
+  .neu-well { background: linear-gradient(145deg, #161616, #000); box-shadow: inset 5px 5px 14px rgba(0,0,0,.72), inset -2px -2px 8px rgba(255,255,255,.035); }
+  .neu-key { background: linear-gradient(145deg, #212121, #121212); box-shadow: 4px 4px 12px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08); }
+  .liquid-cta { background: linear-gradient(135deg, #35bdb5, #007a73); color: #000; font-family: var(--font-mono); font-weight: 600; box-shadow: 0 10px 30px rgba(53,189,181,.22), inset 0 1px 0 rgba(255,255,255,.38); }
+  .editorial-italic { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-weight: 400; color: #e6f7f6; }
+  .telemetry { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: #8a94a0; }
+  .site-nav-scrolled { background: rgba(0,0,0,.7) !important; border-bottom-color: rgba(230,247,246,.16); }
+  .site-nav .site-container { margin-top: max(.5rem, env(safe-area-inset-top)); }
+  .service-card, .reason-card, .surface-card, .testimonial-card, .project-card, .float-stat { background: linear-gradient(145deg, rgba(255,255,255,.06), rgba(26,26,26,.72)); border-color: rgba(230,247,246,.12); box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 14px 34px rgba(0,0,0,.2); }
+  .service-card:hover, .reason-card:hover, .surface-card.hoverable:hover, .project-card:hover { border-color: rgba(53,189,181,.52); box-shadow: 0 18px 42px rgba(0,0,0,.32); }
 }
 

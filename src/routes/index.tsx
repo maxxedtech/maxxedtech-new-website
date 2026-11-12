@@ -50,7 +50,7 @@ function Home() {
   return (
     <>
       {/* ─── HERO ─── */}
-      <section className="home-hero">
+      <section className="home-hero swiss-drafting-bg">
         <div className="dot-grid" />
         <div className="hero-glow hero-glow-a" />
         <div className="hero-glow hero-glow-b" />
@@ -94,7 +94,7 @@ function Home() {
               {...reveal}
               transition={{ delay: 0.45 }}
             >
-              <Link to="/contact" className="button button-primary button-lg pulse-glow">
+              <Link to="/contact" className="button button-primary liquid-cta button-lg pulse-glow">
                 Start Your Project <span>→</span>
               </Link>
               <Link to="/portfolio" className="button button-outline button-lg">
