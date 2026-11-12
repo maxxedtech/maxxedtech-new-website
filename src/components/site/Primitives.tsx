@@ -85,7 +85,7 @@ export function CTASection() {
         >
           <div className="mx-auto mb-4 h-16 w-16 flex items-center justify-center rounded-full border border-primary/40 bg-primary/10">
             <img
-              src="/images/logo/badge-logo.png"
+              src="/images/logo/maxxed-logo-stacked-teal.png"
               alt="Maxxed Tech"
               className="h-10 w-10 object-contain"
             />

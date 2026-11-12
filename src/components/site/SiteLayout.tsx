@@ -234,7 +234,7 @@ function Footer() {
       <div className="site-container grid gap-10 md:grid-cols-2 lg:grid-cols-4">
         {/* Brand Column */}
         <div>
-          <Brand />
+          <img src="/images/logo/maxxed-logo-teal.png" alt="MaxxedTech" width="180" height="120" className="footer-brand-seal" loading="lazy" />
           <p className="mt-5 max-w-xs text-sm text-muted-foreground">{COMPANY.tagline}</p>
           <div className="mt-6 flex gap-3">
             <Social href={COMPANY.facebook} label="Facebook"><Facebook /></Social>

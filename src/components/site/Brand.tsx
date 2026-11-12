@@ -8,10 +8,10 @@ export function Brand({ compact = false, className = "" }: { compact?: boolean; 
       className={`inline-flex items-center transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] ${className}`}
     >
       <img
-        src="/images/logo/navbar-logo.png"
+        src="/images/logo/maxxed-logo-3.png"
         alt="Maxxed Tech"
         className={`w-auto object-contain transition-all duration-300 ${
-          compact ? "h-7 md:h-8" : "h-9 md:h-11"
+          compact ? "h-9 sm:h-11" : "h-9 sm:h-11 lg:h-12"
         }`}
         loading="eager"
       />

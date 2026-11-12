@@ -5,7 +5,6 @@ import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { SiteLayout } from "@/components/site/SiteLayout";
-import { Preloader } from "@/components/site/Preloader";
 
 function NotFoundComponent() {
   return (
@@ -49,13 +48,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "theme-color", content: "#000000" },
       { property: "og:site_name", content: "MaxxedTech Ltd" },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "https://maxxedtech.com/images/logo/maxxed-logo-stacked-teal.png" },
+      { name: "twitter:image", content: "https://maxxedtech.com/images/logo/maxxed-logo-stacked-teal.png" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/images/logo/favicon-logo.png", type: "image/png" },
-      { rel: "shortcut icon", href: "/favicon.png", type: "image/png" },
-      { rel: "apple-touch-icon", href: "/images/logo/badge-logo.png" },
+      { rel: "shortcut icon", href: "/images/logo/favicon-logo.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/images/logo/maxxed-logo-stacked-white.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" },
@@ -84,7 +85,6 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <Preloader />
       <SiteLayout>
         <Outlet />
       </SiteLayout>
